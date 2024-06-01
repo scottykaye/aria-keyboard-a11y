@@ -218,6 +218,12 @@ for (let i = 'A'.charCodeAt(0); i <= 'Z'.charCodeAt(0); i++) {
   LETTERS[letter.toUpperCase()] = letter.toLowerCase()
 }
 
+function checkOrientation(key, orientation) {
+  return orientation === 'horizontal'
+    ? key === SUPPORTED_KEYS.ARROW_LEFT || key === SUPPORTED_KEYS.ARROW_RIGHT
+    : key === SUPPORTED_KEYS.ARROW_UP || key === SUPPORTED_KEYS.ARROW_DOWN
+}
+
 class Navigate {
   readonly orientation?: 'vertical' | 'horizontal'
   readonly navigation?: boolean
@@ -295,10 +301,19 @@ class Navigate {
         return firstLink.focus()
       }
 
+      console.log('test')
       // Expect event.key to be only one of what we support in the list above
       if (Object.values(SUPPORTED_KEYS).includes(event.key)) {
         event.preventDefault()
-        if (event.key === SUPPORTED_KEYS.ESCAPE) {
+        if (
+          event.key === SUPPORTED_KEYS.ESCAPE ||
+          // handles opposites
+          checkOrientation(
+            event.key,
+            this.orientation === 'vertical' ? 'horizontal' : 'vertical',
+          )
+          // here we can do left and right
+        ) {
           // hasChildNodes hasParentNodes do we need to check with these
           const submenu = currentItem?.parentNode?.parentNode as HTMLElement
           if (submenu?.style?.visibility === 'visible') {
@@ -413,6 +428,7 @@ class Navigate {
 
 const navigation = new Navigate('horizontal', true)
 const useKeyboardNavigation = createKeyboardNavHook(navigation)
+
 interface ListItemOptions {
   label: string
   children: React.ReactNode

@@ -1,4 +1,4 @@
-# Aria Keyboard A11y
+# Accessible Navigation
 
 A pub/sub observer that handles keyboard navigation for tabs, accordions and
 menus.
@@ -40,7 +40,7 @@ keyboard events.
 ## Use with React
 
 ```jsx
-import { createKeyboardNav, KeyboardNav } from 'aria-keyboard-a11y'
+import { createKeyboardNav, KeyboardNav } from 'accessible-navigation'
 const tabs = new KeyboardNav('horizontal')
 const useKeyboardNav = createKeyboardNavHook(tabs)
 
